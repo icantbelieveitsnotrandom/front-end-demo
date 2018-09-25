@@ -11,7 +11,6 @@ export default class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <React.Fragment>
-            <h1>Weighted Randomizer</h1>
             <Route path='/' component={Dashboard} />
           </React.Fragment>
         </BrowserRouter>

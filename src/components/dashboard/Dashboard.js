@@ -175,6 +175,8 @@ class Dashboard extends Component {
     const { classes } = this.props;
     return (
       <Fragment>
+        <h1>Weighted Randomizer</h1>
+
         <form className={classes.root}>
           <FormControl className={classes.formControl}>
             <InputLabel>Array Type</InputLabel>
