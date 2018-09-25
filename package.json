@@ -103,10 +103,6 @@
     "webpack-merge": "^4.1.3"
   },
   "dependencies": {
-<<<<<<< Updated upstream
     "@icantbelieveitsnotrandom/weighted-randomizer": "^1.0.0"
-=======
-    "imeanireallycantbelieveitsnotrandom": "^1.3.0"
->>>>>>> Stashed changes
   }
 }
