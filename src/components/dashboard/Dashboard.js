@@ -8,10 +8,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+<<<<<<< Updated upstream
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 
 import randomize from '@icantbelieveitsnotrandom/weighted-randomizer';
+=======
+
+import randomize from 'imeanireallycantbelieveitsnotrandom';
+>>>>>>> Stashed changes
 
 const styles = theme => ({
   root: {
@@ -52,6 +57,7 @@ const styles = theme => ({
 
 
 class Dashboard extends Component {
+<<<<<<< Updated upstream
 
   state = {
     arrayType: '',
@@ -68,6 +74,13 @@ class Dashboard extends Component {
       singleIndex: false,
     }
   };
+=======
+  
+  state = { 
+    arrayType: '',
+    multiline: '',
+  }
+>>>>>>> Stashed changes
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -83,6 +96,7 @@ class Dashboard extends Component {
     }
   };
 
+<<<<<<< Updated upstream
   singleSubmit = async (e) => {
     e.preventDefault();
 
@@ -169,14 +183,23 @@ class Dashboard extends Component {
 
   addArray = () => {
     this.setState({ arrayCount: [...this.state.arrayCount, this.state.arrayCount.length] });
+=======
+  onSubmit = (e) => {
+    e.preventDefault();
+    let arr = this.state.multiline.split('\n')
+    console.log(arr);
+>>>>>>> Stashed changes
   }
 
   render() {
     const { classes } = this.props;
     return (
       <Fragment>
+<<<<<<< Updated upstream
         <h1>Weighted Randomizer</h1>
 
+=======
+>>>>>>> Stashed changes
         <form className={classes.root}>
           <FormControl className={classes.formControl}>
             <InputLabel>Array Type</InputLabel>
@@ -193,6 +216,7 @@ class Dashboard extends Component {
               </MenuItem>
               <MenuItem value='single'>Single</MenuItem>
               <MenuItem value='multi'>Multi</MenuItem>
+<<<<<<< Updated upstream
 
             </Select>
           </FormControl>
@@ -287,8 +311,26 @@ class Dashboard extends Component {
               />
             </Fragment>
           }
+=======
+>>>>>>> Stashed changes
 
+            </Select>
+          </FormControl>
+          {this.state.arrayType === 'single' && <TextField
+          
+          id="filled-multiline-flexible"
+          name="multiline"
+          label="Multiline"
+          multiline
+          rowsMax="4"
+          value={this.state.multiline}
+          onChange={this.handleChange}
+          margin="normal"
+          helperText="enter an element, and then hit enter"
+          variant="filled"
+        />}
         </form>
+<<<<<<< Updated upstream
 
         <br />
 
@@ -393,6 +435,14 @@ class Dashboard extends Component {
             </div>
           </Card>}
         </div>
+=======
+        {this.state.arrayType === 'multi' && <p>multi</p>}
+        {this.state.arrayType === 'single' && <p>single</p>}
+        <br />
+        <Button onClick={this.onSubmit} size='small' variant="contained" color="primary" className={classes.button}>
+          Submit
+      </Button>
+>>>>>>> Stashed changes
       </Fragment>
     );
   }
