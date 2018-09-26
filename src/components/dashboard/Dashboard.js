@@ -1,4 +1,3 @@
-// prefilled data option also
 import React, { Component, Fragment } from 'react';
 import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
@@ -11,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 
-import randomize from 'imeanireallycantbelieveitsnotrandom';
+import randomize from '@icantbelieveitsnotrandom/weighted-randomizer';
 
 const styles = theme => ({
   root: {
@@ -62,60 +61,88 @@ class Dashboard extends Component {
     endResult: '',
     arrayCount: [0],
     multiResults: '',
+    errors: {
+      singleArray: false,
+      singleResults: false,
+      singleIndex: false,
+    }
   };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    if(event.target.name.includes('multiArray')) {
+    if (event.target.name.includes('multiArray')) {
 
       let multiResults = '';
 
-      for(let i = 0; i < this.state.arrayCount.length; i ++) {
-        multiResults += String.fromCharCode(97 + i) +  ': \n'
+      for (let i = 0; i < this.state.arrayCount.length; i++) {
+        multiResults += String.fromCharCode(97 + i) + ': \n'
       }
 
-      this.setState({multiResults}, ()=> console.log(this.state));
+      this.setState({ multiResults });
     }
   };
 
-  singleSubmit = (e) => {
+  singleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({ submitted: true });
+
+    if (!this.state.singleArray || !this.state.singleResults || !this.state.singleIndex) {
+
+      if (!this.state.singleResults) {
+        await this.setState({ errors: { ...this.state.errors, singleResults: true } })
+      } else {
+        await this.setState({ errors: { ...this.state.errors, singleResults: false } })
+      }
+      if (!this.state.singleResults) {
+        await this.setState({ errors: { ...this.state.errors, singleResults: true } })
+      } else {
+        await this.setState({ errors: { ...this.state.errors, singleResults: false } })
+      }
+      if (!this.state.singleResults) {
+        await this.setState({ errors: { ...this.state.errors, singleResults: true } })
+      } else {
+        await this.setState({ errors: { ...this.state.errors, singleResults: false } })
+      }
+    } else {
+
+      await this.setState({ submitted: true, errors: { singleArray: false, singleIndex: false, singleResults: false } });
 
 
-    let endResult = randomize({
-      type: 'single',
-      array: this.state.singleArray.split('\n').map(element => {
-        try {
-          return JSON.parse(element);
-        } catch (err) {
-          return element
-        }
-      }),
-      index: this.convertToObject(this.state.singleIndex.split('\n')),
-      results: this.convertToObject(this.state.singleResults.split('\n')),
-    })
+      let endResult = randomize({
+        type: 'single',
+        array: this.state.singleArray.split('\n').map(element => {
+          try {
+            return JSON.parse(element);
+          } catch (err) {
+            return element
+          }
+        }),
+        index: this.convertToObject(this.state.singleIndex.split('\n')),
+        results: this.convertToObject(this.state.singleResults.split('\n')),
+      })
 
-    this.setState({ endResult }, () => { console.log(this.state.endResult) })
+      this.setState({ endResult }, () => { console.log(this.state.endResult) })
+    }
   };
 
   multiSubmit = (e) => {
     e.preventDefault();
+
     this.setState({ submitted: true });
 
-    console.log(this.state);
     let obj = {}
-    console.log(Object.keys(this.state).filter(element => element.includes('multiArray')).map((element, i) => obj[String.fromCharCode(97 + i)] = this.state[element].split('\n')))
-    console.log(obj);
 
-    let endResult =  randomize({
+    Object.keys(this.state).filter(element => element.includes('multiArray')).map((element, i) => obj[String.fromCharCode(97 + i)] = this.state[element].split('\n'))
+
+
+    let endResult = randomize({
       type: 'multi',
       arrays: obj,
       results: this.convertToObject(this.state.multiResults.split('\n'))
     })
 
-    this.setState({ endResult }, () => { console.log(this.state.endResult) })
+    this.setState({ endResult })
   }
+
 
   convertToObject = (array) => {
     let obj = {};
@@ -147,6 +174,8 @@ class Dashboard extends Component {
     const { classes } = this.props;
     return (
       <Fragment>
+        <h1>Weighted Randomizer</h1>
+
         <form className={classes.root}>
           <FormControl className={classes.formControl}>
             <InputLabel>Array Type</InputLabel>
@@ -170,99 +199,111 @@ class Dashboard extends Component {
           {/* single array code */}
 
           {this.state.arrayType === 'single' &&
-            <TextField
-              className={classes.multiline}
-              name="singleArray"
-              label="Array Content"
-              multiline
-              rowsMax="4"
-              value={this.state.singleArray}
-              onChange={this.handleChange}
-              margin="normal"
-              helperText="enter an element, and then hit enter"
-              variant="filled"
-            />
-          }
+            <Fragment>
 
-          {this.state.arrayType === 'single' &&
-            <TextField
-              className={classes.multiline}
-              name="singleIndex"
-              label="Index"
-              multiline
-              rowsMax="4"
-              value={this.state.singleIndex}
-              onChange={this.handleChange}
-              margin="normal"
-              helperText="a: [<start Index>, <end Index>]"
-              variant="filled"
-              placeholder="a: [0,4]"
-            />
-          }
-
-          {this.state.arrayType === 'single' &&
-            <TextField
-              className={classes.multiline}
-              name="singleResults"
-              label="singleResults"
-              multiline
-              rowsMax="4"
-              value={this.state.singleResults}
-              onChange={this.handleChange}
-              margin="normal"
-              helperText="a: <item count>"
-              variant="filled"
-              placeholder="a: 2"
-            />
-          }
-          {/* multi array code */}
-          {this.state.arrayType === 'multi' && <div className={classes.multiArrayDiv}>
-            {this.state.arrayCount.map(index => {
-              return <TextField
-                key={index}
+              <TextField
                 className={classes.multiline}
-                name={`multiArray${index}`}
+                name="singleArray"
                 label="Array Content"
                 multiline
                 rowsMax="4"
-                value={this.state[`multiArray${index}`]}
+                value={this.state.singleArray}
                 onChange={this.handleChange}
                 margin="normal"
                 helperText="enter an element, and then hit enter"
                 variant="filled"
-                placeholder="dogs"
+                error={this.state.errors.singleArray}
               />
-            })}
-            {this.state.arrayType === 'multi' && <Button onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
-          </div>}
+
+              <TextField
+                className={classes.multiline}
+                name="singleIndex"
+                label="Index"
+                multiline
+                rowsMax="4"
+                value={this.state.singleIndex}
+                onChange={this.handleChange}
+                margin="normal"
+                helperText="a: [<start Index>, <end Index>]"
+                variant="filled"
+                placeholder="a: [0,4]"
+                error={this.state.errors.singleIndex}
+              />
+
+              <TextField
+                className={classes.multiline}
+                name="singleResults"
+                label="singleResults"
+                multiline
+                rowsMax="4"
+                value={this.state.singleResults}
+                onChange={this.handleChange}
+                margin="normal"
+                helperText="a: <item count>"
+                variant="filled"
+                placeholder="a: 2"
+                error={this.state.errors.singleResults}
+              />
+
+            </Fragment>
+          }
+
 
           {this.state.arrayType === 'multi' &&
-            <TextField
-              className={classes.multiline}
-              name="multiResults"
-              label="multiResults"
-              multiline
-              rowsMax="4"
-              value={this.state.multiResults}
-              onChange={this.handleChange}
-              margin="normal"
-              helperText="a: <item count>"
-              variant="filled"
-              placeholder="a: 2"
-            />
+            <Fragment>
+              <div className={classes.multiArrayDiv}>
+                {this.state.arrayCount.map(index => {
+                  return <TextField
+                    key={index}
+                    className={classes.multiline}
+                    name={`multiArray${index}`}
+                    label="Array Content"
+                    multiline
+                    rowsMax="4"
+                    value={this.state[`multiArray${index}`]}
+                    onChange={this.handleChange}
+                    margin="normal"
+                    helperText="enter an element, and then hit enter"
+                    variant="filled"
+                    placeholder="dogs"
+                  />
+                })}
+                {this.state.arrayType === 'multi' && <Button onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
+              </div>
+
+              <TextField
+                className={classes.multiline}
+                name="multiResults"
+                label="multiResults"
+                multiline
+                rowsMax="4"
+                value={this.state.multiResults}
+                onChange={this.handleChange}
+                margin="normal"
+                helperText="a: <item count>"
+                variant="filled"
+                placeholder="a: 2"
+              />
+            </Fragment>
           }
 
         </form>
 
         <br />
+
         {this.state.arrayType === 'single' && <Button onClick={this.singleSubmit} size='small' variant="contained" color="primary">
           Submit
       </Button>}
+
         {this.state.arrayType === 'multi' && <Button onClick={this.multiSubmit} size='small' variant="contained" color="primary">
           Submit
       </Button>}
+
         <br />
         <br />
+
+        {/* RESULTS */}
+
         <div>
           {this.state.arrayType === 'single' && <Card className={classes.card}>
             <Typography color="textSecondary">input</Typography>
