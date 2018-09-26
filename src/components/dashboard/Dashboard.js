@@ -1,4 +1,3 @@
-// prefilled data option also
 import React, { Component, Fragment } from 'react';
 import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
