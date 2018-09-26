@@ -9,11 +9,18 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid'
 
 import randomize from '@icantbelieveitsnotrandom/weighted-randomizer';
 
 const styles = theme => ({
   root: {
+    flexGrow: 1,
+    width: '100%',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  form: {
     display: 'flex',
     flexWrap: 'wrap',
   },
@@ -32,8 +39,8 @@ const styles = theme => ({
     marginLeft: 20,
     float: 'left',
   },
-  multiline: {
-    marginLeft: 10,
+  textField: {
+    marginLeft: 20,
   },
   multiArrayDiv: {
     width: 230
@@ -45,6 +52,11 @@ const styles = theme => ({
     marginTop: 20,
     marginLeft: 10,
     height: 20,
+  },
+  radius: {
+    borderRadius: 25,
+  },
+  title: {
   }
 });
 
@@ -173,10 +185,16 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Fragment>
-        <h1>Weighted Randomizer</h1>
+      <Grid 
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      className={classes.root}>
+        <Grid item><Typography variant='display3' className={classes.title}>Weighted Randomizer</Typography></Grid>
 
-        <form className={classes.root}>
+        <form className={classes.form}>
           <FormControl className={classes.formControl}>
             <InputLabel>Array Type</InputLabel>
             <Select
@@ -202,8 +220,9 @@ class Dashboard extends Component {
             <Fragment>
 
               <TextField
-                className={classes.multiline}
+                className={classes.textField}
                 name="singleArray"
+                placeholder="Array Content"
                 label="Array Content"
                 multiline
                 rowsMax="4"
@@ -211,12 +230,12 @@ class Dashboard extends Component {
                 onChange={this.handleChange}
                 margin="normal"
                 helperText="enter an element, and then hit enter"
-                variant="filled"
+                variant="outlined"
                 error={this.state.errors.singleArray}
               />
 
               <TextField
-                className={classes.multiline}
+                className={classes.textField}
                 name="singleIndex"
                 label="Index"
                 multiline
@@ -225,13 +244,13 @@ class Dashboard extends Component {
                 onChange={this.handleChange}
                 margin="normal"
                 helperText="a: [<start Index>, <end Index>]"
-                variant="filled"
+                variant="outlined"
                 placeholder="a: [0,4]"
                 error={this.state.errors.singleIndex}
               />
 
               <TextField
-                className={classes.multiline}
+                className={classes.textField}
                 name="singleResults"
                 label="singleResults"
                 multiline
@@ -240,11 +259,10 @@ class Dashboard extends Component {
                 onChange={this.handleChange}
                 margin="normal"
                 helperText="a: <item count>"
-                variant="filled"
+                variant="outlined"
                 placeholder="a: 2"
                 error={this.state.errors.singleResults}
               />
-
             </Fragment>
           }
 
@@ -255,7 +273,7 @@ class Dashboard extends Component {
                 {this.state.arrayCount.map(index => {
                   return <TextField
                     key={index}
-                    className={classes.multiline}
+                    className={classes.textField}
                     name={`multiArray${index}`}
                     label="Array Content"
                     multiline
@@ -264,15 +282,18 @@ class Dashboard extends Component {
                     onChange={this.handleChange}
                     margin="normal"
                     helperText="enter an element, and then hit enter"
-                    variant="filled"
+                    variant="outlined"
                     placeholder="dogs"
                   />
                 })}
                 {this.state.arrayType === 'multi' && <Button onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
+                {this.state.arrayType === 'multi' && <Button onClick={this.multiSubmit} size='small' variant="contained" color="primary">
+          Submit
+      </Button>}
               </div>
 
               <TextField
-                className={classes.multiline}
+                className={classes.textField}
                 name="multiResults"
                 label="multiResults"
                 multiline
@@ -281,7 +302,7 @@ class Dashboard extends Component {
                 onChange={this.handleChange}
                 margin="normal"
                 helperText="a: <item count>"
-                variant="filled"
+                variant="outlined"
                 placeholder="a: 2"
               />
             </Fragment>
@@ -295,9 +316,6 @@ class Dashboard extends Component {
           Submit
       </Button>}
 
-        {this.state.arrayType === 'multi' && <Button onClick={this.multiSubmit} size='small' variant="contained" color="primary">
-          Submit
-      </Button>}
 
         <br />
         <br />
@@ -305,7 +323,7 @@ class Dashboard extends Component {
         {/* RESULTS */}
 
         <div>
-          {this.state.arrayType === 'single' && <Card className={classes.card}>
+          {this.state.arrayType === 'single' && <Card className={[classes.card, classes.radius].join(' ')}>
             <Typography color="textSecondary">input</Typography>
             <pre>{`
         import randomize from 'weighted-randomizer';
@@ -392,7 +410,7 @@ class Dashboard extends Component {
             </div>
           </Card>}
         </div>
-      </Fragment>
+      </Grid>
     );
   }
 }
