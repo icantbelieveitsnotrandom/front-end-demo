@@ -58,7 +58,7 @@ class Dashboard extends Component {
     singleResults: '',
     singleIndex: '',
     submitted: false,
-    endResult: '',
+    endResult: [],
     arrayCount: [0],
     multiResults: '',
     errors: {
@@ -120,7 +120,7 @@ class Dashboard extends Component {
         results: this.convertToObject(this.state.singleResults.split('\n')),
       })
 
-      this.setState({ endResult }, () => { console.log(this.state.endResult) })
+      this.setState({ endResult })
     }
   };
 
