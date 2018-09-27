@@ -17,8 +17,6 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     width: '100%',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   form: {
     display: 'flex',
@@ -50,9 +48,16 @@ const styles = theme => ({
   },
   button: {
     marginTop: 20,
-    marginLeft: 10,
     height: 20,
   },
+  addarraybutton: {
+    marginLeft: 30, 
+    marginTop: 20,
+  },
+  multisubmitbutton: {
+    marginLeft: 70, 
+    marginTop: 20,
+  }, 
   radius: {
     borderRadius: 25,
   },
@@ -286,8 +291,8 @@ class Dashboard extends Component {
                     placeholder="dogs"
                   />
                 })}
-                {this.state.arrayType === 'multi' && <Button onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
-                {this.state.arrayType === 'multi' && <Button onClick={this.multiSubmit} size='small' variant="contained" color="primary">
+                {this.state.arrayType === 'multi' && <Button className={classes.addarraybutton} onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
+                {this.state.arrayType === 'multi' && <Button className={classes.multisubmitbutton} onClick={this.multiSubmit} size='small' variant="contained" color="primary">
           Submit
       </Button>}
               </div>
