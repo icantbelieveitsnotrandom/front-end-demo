@@ -1,7 +1,7 @@
 import { React, Fragment } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import HelpCircleOutline from 'mdi-material-ui/helpCircleOutline';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 
 const styles = theme => ({
   basic: {
@@ -29,7 +29,7 @@ export const ArrayTypeToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon} ><HelpCircleOutline /></p>
+        <p className={props.classes.icon} ><HelpOutline /></p>
       </div>
       <div>
         <p>'Single' utilizes one array, 'Multi' will use one or more arrays.</p>
@@ -42,7 +42,7 @@ export const ArrayContentToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>Unlike a regular array  where items are delineated by commas, you can just enter in items and hit return/enter.</p>
       <div className={props.classes.example}>
@@ -57,7 +57,7 @@ export const ArrayIndexToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>Break up the single array into sections.</p>
       <div className={props.classes.example}>
@@ -75,7 +75,7 @@ export const ArrayResultsToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>This section determines the number of items you want from each index.</p>
       <div className={props.classes.example}>
@@ -91,7 +91,7 @@ export const SubmitToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>Hitting submit will display an output section, which will show you what the end results will look like.</p>
     </div>
@@ -102,7 +102,7 @@ export const InputToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>Drop and paste the code in your project! Make sure you import the npm package before putting it in your code.</p>
     </div>
@@ -113,7 +113,7 @@ export const OutputToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>expected output from the function when it runs.</p>
     </div>
@@ -124,7 +124,7 @@ export const MArrayContentToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>Unlike a regular array  where items are delineated by commas, you can just enter in items and hit return/enter.</p>
       <div className={props.classes.example}>
@@ -140,7 +140,7 @@ export const MArrayIndexToolTip = withStyles(styles)((props) => {
   return (
     <div className={props.classes.basic}>
       <div className={props.classes.float}>
-        <p className={props.classes.icon}><HelpCircleOutline /></p>
+        <p className={props.classes.icon}><HelpOutline /></p>
       </div>
       <p>This section determines how many items form each array you want to be in the final results.</p>
       <div className={props.classes.example}>
