@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 
 import randomize from '@icantbelieveitsnotrandom/weighted-randomizer';
 
@@ -185,34 +187,36 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid 
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justify="center"
-      className={classes.root}>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        className={classes.root}>
         <Grid item><Typography variant='display3' className={classes.title}>Weighted Randomizer</Typography></Grid>
 
         <form className={classes.form}>
-          <FormControl className={classes.formControl}>
-            <InputLabel>Array Type</InputLabel>
-            <Select
-              value={this.state.arrayType}
-              onChange={this.handleChange}
-              inputProps={{
-                name: 'arrayType',
-                id: 'array-type',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value='single'>Single</MenuItem>
-              <MenuItem value='multi'>Multi</MenuItem>
+          <Tooltip TransitionComponent={Zoom}  title="'Single' utilizes one array, 'Multi' will use one or more array"  placement="bottom">
+            <FormControl className={classes.formControl}>
+              <InputLabel>Array Type</InputLabel>
+              <Select
+                value={this.state.arrayType}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'arrayType',
+                  id: 'array-type',
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value='single'>Single</MenuItem>
+                <MenuItem value='multi'>Multi</MenuItem>
 
-            </Select>
-          </FormControl>
+              </Select>
+            </FormControl>
+          </Tooltip>
 
           {/* single array code */}
 
@@ -288,7 +292,7 @@ class Dashboard extends Component {
                 })}
                 {this.state.arrayType === 'multi' && <Button onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
                 {this.state.arrayType === 'multi' && <Button onClick={this.multiSubmit} size='small' variant="contained" color="primary">
-          Submit
+                  Submit
       </Button>}
               </div>
 
