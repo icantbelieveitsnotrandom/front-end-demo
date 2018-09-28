@@ -10,7 +10,10 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
+import Tooltip from '@material-ui/core/Tooltip';
+import Zoom from '@material-ui/core/Zoom';
 
+import { ArrayContentToolTip, ArrayTypeToolTip, ArrayIndexToolTip, ArrayResultsToolTip, MArrayIndexToolTip, SubmitToolTip, InputToolTip, OutputToolTip, MArrayContentToolTip } from './Tooltips.js';
 import randomize from '@icantbelieveitsnotrandom/weighted-randomizer';
 
 const styles = theme => ({
@@ -51,17 +54,18 @@ const styles = theme => ({
     height: 20,
   },
   addarraybutton: {
-    marginLeft: 30, 
+    marginLeft: 30,
     marginTop: 20,
   },
   multisubmitbutton: {
-    marginLeft: 70, 
+    marginLeft: 70,
     marginTop: 20,
-  }, 
+  },
   radius: {
     borderRadius: 25,
   },
-  title: {
+  tooltipButton: {
+    marginTop: 10
   }
 });
 
@@ -70,7 +74,7 @@ const styles = theme => ({
 class Dashboard extends Component {
 
   state = {
-    arrayType: '',
+    arrayType: 'single',
     singleArray: '',
     singleResults: '',
     singleIndex: '',
@@ -82,7 +86,8 @@ class Dashboard extends Component {
       singleArray: false,
       singleResults: false,
       singleIndex: false,
-    }
+    },
+    tooltips: true,
   };
 
   handleChange = event => {
@@ -101,24 +106,24 @@ class Dashboard extends Component {
 
   singleSubmit = async (e) => {
     e.preventDefault();
-
     if (!this.state.singleArray || !this.state.singleResults || !this.state.singleIndex) {
 
-      if (!this.state.singleResults) {
-        await this.setState({ errors: { ...this.state.errors, singleResults: true } })
+      if (!this.state.singleArray) {
+        await this.setState({ errors: { ...this.state.errors, singleArray: true } })
       } else {
-        await this.setState({ errors: { ...this.state.errors, singleResults: false } })
+        await this.setState({ errors: { ...this.state.errors, singleArray: false } })
       }
       if (!this.state.singleResults) {
         await this.setState({ errors: { ...this.state.errors, singleResults: true } })
       } else {
         await this.setState({ errors: { ...this.state.errors, singleResults: false } })
       }
-      if (!this.state.singleResults) {
-        await this.setState({ errors: { ...this.state.errors, singleResults: true } })
+      if (!this.state.singleIndex) {
+        await this.setState({ errors: { ...this.state.errors, singleIndex: true } })
       } else {
-        await this.setState({ errors: { ...this.state.errors, singleResults: false } })
+        await this.setState({ errors: { ...this.state.errors, singleIndex: false } })
       }
+      console.log(this.state)
     } else {
 
       await this.setState({ submitted: true, errors: { singleArray: false, singleIndex: false, singleResults: false } });
@@ -187,87 +192,99 @@ class Dashboard extends Component {
     this.setState({ arrayCount: [...this.state.arrayCount, this.state.arrayCount.length] });
   }
 
+  toggleTooltip = () => {
+    this.setState({ tooltips: !this.state.tooltips })
+  }
+
   render() {
     const { classes } = this.props;
     return (
-      <Grid 
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justify="center"
-      className={classes.root}>
-        <Grid item><Typography variant='display3' className={classes.title}>Weighted Randomizer</Typography></Grid>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="center"
+        className={classes.root}>
+        <Grid item><Typography variant='display2' className={classes.title}>Weighted Randomizer</Typography></Grid>
 
         <form className={classes.form}>
-          <FormControl className={classes.formControl}>
-            <InputLabel>Array Type</InputLabel>
-            <Select
-              value={this.state.arrayType}
-              onChange={this.handleChange}
-              inputProps={{
-                name: 'arrayType',
-                id: 'array-type',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value='single'>Single</MenuItem>
-              <MenuItem value='multi'>Multi</MenuItem>
+          <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<ArrayTypeToolTip />} placement="bottom">
+            <FormControl className={classes.formControl}>
+              <InputLabel>Array Type</InputLabel>
+              <Select
+                value={this.state.arrayType}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'arrayType',
+                  id: 'array-type',
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value='single'>Single</MenuItem>
+                <MenuItem value='multi'>Multi</MenuItem>
 
-            </Select>
-          </FormControl>
+              </Select>
+            </FormControl>
+          </Tooltip>
 
           {/* single array code */}
 
           {this.state.arrayType === 'single' &&
             <Fragment>
 
-              <TextField
-                className={classes.textField}
-                name="singleArray"
-                placeholder="Array Content"
-                label="Array Content"
-                multiline
-                rowsMax="4"
-                value={this.state.singleArray}
-                onChange={this.handleChange}
-                margin="normal"
-                helperText="enter an element, and then hit enter"
-                variant="outlined"
-                error={this.state.errors.singleArray}
-              />
+              <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<ArrayContentToolTip />} placement="bottom">
+                <TextField
+                  className={classes.textField}
+                  name="singleArray"
+                  placeholder="Array Content"
+                  label="Array Content"
+                  multiline
+                  rowsMax="4"
+                  value={this.state.singleArray}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  helperText="enter an element, and then hit enter"
+                  variant="outlined"
+                  error={this.state.errors.singleArray}
+                />
+              </Tooltip>
 
-              <TextField
-                className={classes.textField}
-                name="singleIndex"
-                label="Index"
-                multiline
-                rowsMax="4"
-                value={this.state.singleIndex}
-                onChange={this.handleChange}
-                margin="normal"
-                helperText="a: [<start Index>, <end Index>]"
-                variant="outlined"
-                placeholder="a: [0,4]"
-                error={this.state.errors.singleIndex}
-              />
+              <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<ArrayIndexToolTip />} placement="bottom">
+                <TextField
+                  className={classes.textField}
+                  name="singleIndex"
+                  label="Index"
+                  multiline
+                  rowsMax="4"
+                  value={this.state.singleIndex}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  helperText="a: [<start Index>, <end Index>]"
+                  variant="outlined"
+                  placeholder="a: [0,4]"
+                  error={this.state.errors.singleIndex}
+                />
+              </Tooltip>
 
-              <TextField
-                className={classes.textField}
-                name="singleResults"
-                label="singleResults"
-                multiline
-                rowsMax="4"
-                value={this.state.singleResults}
-                onChange={this.handleChange}
-                margin="normal"
-                helperText="a: <item count>"
-                variant="outlined"
-                placeholder="a: 2"
-                error={this.state.errors.singleResults}
-              />
+              <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<ArrayResultsToolTip />} placement="bottom">
+                <TextField
+                  className={classes.textField}
+                  name="singleResults"
+                  label="singleResults"
+                  multiline
+                  rowsMax="4"
+                  value={this.state.singleResults}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  helperText="a: <item count>"
+                  variant="outlined"
+                  placeholder="a: 2"
+                  error={this.state.errors.singleResults}
+                />
+              </Tooltip>
             </Fragment>
           }
 
@@ -276,51 +293,68 @@ class Dashboard extends Component {
             <Fragment>
               <div className={classes.multiArrayDiv}>
                 {this.state.arrayCount.map(index => {
-                  return <TextField
-                    key={index}
-                    className={classes.textField}
-                    name={`multiArray${index}`}
-                    label="Array Content"
-                    multiline
-                    rowsMax="4"
-                    value={this.state[`multiArray${index}`]}
-                    onChange={this.handleChange}
-                    margin="normal"
-                    helperText="enter an element, and then hit enter"
-                    variant="outlined"
-                    placeholder="dogs"
-                  />
+                  return (
+                    <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<MArrayContentToolTip />} placement="bottom">
+                      <TextField
+                        key={index}
+                        className={classes.textField}
+                        name={`multiArray${index}`}
+                        label="Array Content"
+                        multiline
+                        rowsMax="4"
+                        value={this.state[`multiArray${index}`]}
+                        onChange={this.handleChange}
+                        margin="normal"
+                        helperText="enter an element, and then hit enter"
+                        variant="outlined"
+                        placeholder="dogs"
+                      />
+                    </Tooltip>
+                  )
                 })}
-                {this.state.arrayType === 'multi' && <Button className={classes.addarraybutton} onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
-                {this.state.arrayType === 'multi' && <Button className={classes.multisubmitbutton} onClick={this.multiSubmit} size='small' variant="contained" color="primary">
-          Submit
-      </Button>}
-              </div>
 
-              <TextField
-                className={classes.textField}
-                name="multiResults"
-                label="multiResults"
-                multiline
-                rowsMax="4"
-                value={this.state.multiResults}
-                onChange={this.handleChange}
-                margin="normal"
-                helperText="a: <item count>"
-                variant="outlined"
-                placeholder="a: 2"
-              />
+                {this.state.arrayType === 'multi' && <Button className={classes.addarraybutton} onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
+
+                {this.state.arrayType === 'multi' &&
+                  <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<SubmitToolTip />} placement="bottom">
+
+                    <Button className={classes.multisubmitbutton} onClick={this.multiSubmit} size='small' variant="contained" color="primary">
+                      Submit
+                  </Button>
+                  </Tooltip>}
+              </div>
+              <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<MArrayIndexToolTip />} placement="bottom">
+
+                <TextField
+                  className={classes.textField}
+                  name="multiResults"
+                  label="multiResults"
+                  multiline
+                  rowsMax="4"
+                  value={this.state.multiResults}
+                  onChange={this.handleChange}
+                  margin="normal"
+                  helperText="a: <item count>"
+                  variant="outlined"
+                  placeholder="a: 2"
+                />
+              </Tooltip>
             </Fragment>
+
           }
 
         </form>
 
         <br />
+        {this.state.arrayType === 'single' &&
+          <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<SubmitToolTip />} placement="bottom">
 
-        {this.state.arrayType === 'single' && <Button onClick={this.singleSubmit} size='small' variant="contained" color="primary">
-          Submit
-      </Button>}
+            <Button onClick={this.singleSubmit} size='small' variant="contained" color="primary">
+              Submit
+            </Button>
+          </ Tooltip>
 
+        }
 
         <br />
         <br />
@@ -328,93 +362,120 @@ class Dashboard extends Component {
         {/* RESULTS */}
 
         <div>
-          {this.state.arrayType === 'single' && <Card className={[classes.card, classes.radius].join(' ')}>
-            <Typography color="textSecondary">input</Typography>
-            <pre>{`
+
+          {this.state.arrayType === 'single' &&
+            <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<InputToolTip />} placement="right">
+              <Card className={[classes.card, classes.radius].join(' ')}>
+                <Typography color="textSecondary">input</Typography>
+                <pre>{`
         import randomize from 'weighted-randomizer';
 
         
         randomize({
             type: 'single',
             array: [${this.state.singleArray.split('\n').map(element => {
-                try {
-                  JSON.parse(element)
-                  return element
-                } catch (err) {
-                  return '\'' + element + '\'';
-                }
-              })}],
+                    try {
+                      JSON.parse(element)
+                      return element
+                    } catch (err) {
+                      return '\'' + element + '\'';
+                    }
+                  })}],
             index: {
                 ${this.state.singleIndex.split('\n').map((index, i) => {
-                if (i > 0) return `\n                ` + index
-                return index
-              })}
+                    if (i > 0) return `\n                ` + index
+                    return index
+                  })}
             },
             results: {
                 ${this.state.singleResults.split('\n').map((index, i) => {
-                if (i > 0) return `\n                ` + index
-                return index
-              })}
+                    if (i > 0) return `\n                ` + index
+                    return index
+                  })}
             }
         })
         `}</pre>
-          </Card>}
-          {this.state.submitted && this.state.arrayType === 'single' && <Card className={classes.card}>
-            <Typography color="textSecondary">output</Typography>
-            <div className={classes.resultsDiv}>
-              {`[${this.state.endResult.map(element => {
-                try {
-                  JSON.parse(element)
-                  return element
-                } catch (err) {
-                  return '\'' + element + '\'';
-                }
-              })}]`}
-            </div>
-          </Card>}
-          {this.state.arrayType === 'multi' && <Card className={classes.card}>
-            <Typography color="textSecondary">input</Typography>
-            <pre>{`
+              </Card>
+            </Tooltip>}
+
+          {this.state.submitted && this.state.arrayType === 'single' &&
+            <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<OutputToolTip />} placement="right">
+
+              <Card className={classes.card}>
+                <Typography color="textSecondary">output</Typography>
+                <div className={classes.resultsDiv}>
+                  {`[${this.state.endResult.map(element => {
+                    try {
+                      JSON.parse(element)
+                      return element
+                    } catch (err) {
+                      return '\'' + element + '\'';
+                    }
+                  })}]`}
+                </div>
+              </Card>
+            </Tooltip>}
+
+
+          {this.state.arrayType === 'multi' &&
+            <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<ArrayTypeToolTip />} placement="bottom">
+              <Card className={classes.card}>
+                <Typography color="textSecondary">input</Typography>
+                <pre>{`
         import randomize from 'weighted-randomizer';
 
         
         randomize({
             type: 'multi',
             arrays:  {${Object.keys(this.state).filter(element => element.includes('multiArray')).map((element, i) => {
-                let array = this.state[element].split('\n').map(element => {
-                  try {
-                    JSON.parse(element)
-                    return element
-                  } catch (err) {
-                    return '\'' + element + '\'';
-                  }
-                })
-                return '\n                ' + String.fromCharCode(97 + i) + ': [' + array + ']'
-              })}
+                    let array = this.state[element].split('\n').map(element => {
+                      try {
+                        JSON.parse(element)
+                        return element
+                      } catch (err) {
+                        return '\'' + element + '\'';
+                      }
+                    })
+                    return '\n                ' + String.fromCharCode(97 + i) + ': [' + array + ']'
+                  })}
             },
             results: {
                 ${this.state.multiResults.split('\n').map((index, i) => {
-                if (i > 0) return `\n                ` + index
-                return index
-              })}
+                    if (i > 0) return `\n                ` + index
+                    return index
+                  })}
             }
         })
         `}</pre>
-          </Card>}
-          {this.state.submitted && this.state.arrayType === 'multi' && <Card className={classes.card}>
-            <Typography color="textSecondary">output</Typography>
-            <div className={classes.resultsDiv}>
-              {`[${this.state.endResult.map(element => {
-                try {
-                  JSON.parse(element)
-                  return element
-                } catch (err) {
-                  return '\'' + element + '\'';
-                }
-              })}]`}
-            </div>
-          </Card>}
+              </Card>
+            </Tooltip>}
+
+
+          {this.state.submitted && this.state.arrayType === 'multi' &&
+            <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<OutputToolTip />} placement="right">
+              <Card className={classes.card}>
+                <Typography color="textSecondary">output</Typography>
+                <div className={classes.resultsDiv}>
+                  {`[${this.state.endResult.map(element => {
+                    try {
+                      JSON.parse(element)
+                      return element
+                    } catch (err) {
+                      return '\'' + element + '\'';
+                    }
+                  })}]`}
+                </div>
+              </Card>
+            </Tooltip>}
         </div>
+        {!this.state.tooltips &&
+          <Tooltip disableFocusListener disableTouchListener TransitionComponent={Zoom} title={`enabling tool tips will allow you to see instructions/examples when you hover over an element on screen.`} placement="bottom">
+
+            <Button size='small' variant='contained' className={classes.tooltipButton} onClick={this.toggleTooltip}>Enable Tool Tips</Button>
+          </Tooltip>
+        }
+        {this.state.tooltips && <Button size='small' variant='outlined' className={classes.tooltipButton} onClick={this.toggleTooltip}>Disable Tool Tips</Button>}
+        {this.state.tooltips && <Typography variant='caption'>*Hover over each form element to see the tooltip*</Typography>}
       </Grid>
     );
   }
