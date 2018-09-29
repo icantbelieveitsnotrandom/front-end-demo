@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid'
+import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 
@@ -44,12 +44,13 @@ const styles = theme => ({
     marginLeft: 20,
   },
   multiArrayDiv: {
-    width: 230
+    width: 230,
   },
   resultsDiv: {
-    margin: 30
+    margin: 30,
   },
   button: {
+    marginLeft: 30,
     marginTop: 20,
     height: 20,
   },
@@ -65,8 +66,8 @@ const styles = theme => ({
     borderRadius: 25,
   },
   tooltipButton: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 
@@ -97,7 +98,7 @@ class Dashboard extends Component {
       let multiResults = '';
 
       for (let i = 0; i < this.state.arrayCount.length; i++) {
-        multiResults += String.fromCharCode(97 + i) + ': \n'
+        multiResults += String.fromCharCode(97 + i) + ': \n';
       }
 
       this.setState({ multiResults });
@@ -109,21 +110,20 @@ class Dashboard extends Component {
     if (!this.state.singleArray || !this.state.singleResults || !this.state.singleIndex) {
 
       if (!this.state.singleArray) {
-        await this.setState({ errors: { ...this.state.errors, singleArray: true } })
+        await this.setState({ errors: { ...this.state.errors, singleArray: true } });
       } else {
-        await this.setState({ errors: { ...this.state.errors, singleArray: false } })
+        await this.setState({ errors: { ...this.state.errors, singleArray: false } });
       }
       if (!this.state.singleResults) {
-        await this.setState({ errors: { ...this.state.errors, singleResults: true } })
+        await this.setState({ errors: { ...this.state.errors, singleResults: true } });
       } else {
-        await this.setState({ errors: { ...this.state.errors, singleResults: false } })
+        await this.setState({ errors: { ...this.state.errors, singleResults: false } });
       }
       if (!this.state.singleIndex) {
-        await this.setState({ errors: { ...this.state.errors, singleIndex: true } })
+        await this.setState({ errors: { ...this.state.errors, singleIndex: true } });
       } else {
-        await this.setState({ errors: { ...this.state.errors, singleIndex: false } })
+        await this.setState({ errors: { ...this.state.errors, singleIndex: false } });
       }
-      console.log(this.state)
     } else {
 
       await this.setState({ submitted: true, errors: { singleArray: false, singleIndex: false, singleResults: false } });
@@ -135,14 +135,14 @@ class Dashboard extends Component {
           try {
             return JSON.parse(element);
           } catch (err) {
-            return element
+            return element;
           }
         }),
         index: this.convertToObject(this.state.singleIndex.split('\n')),
         results: this.convertToObject(this.state.singleResults.split('\n')),
-      })
+      });
 
-      this.setState({ endResult })
+      this.setState({ endResult });
     }
   };
 
@@ -151,18 +151,18 @@ class Dashboard extends Component {
 
     this.setState({ submitted: true });
 
-    let obj = {}
+    let obj = {};
 
-    Object.keys(this.state).filter(element => element.includes('multiArray')).map((element, i) => obj[String.fromCharCode(97 + i)] = this.state[element].split('\n'))
+    Object.keys(this.state).filter(element => element.includes('multiArray')).map((element, i) => obj[String.fromCharCode(97 + i)] = this.state[element].split('\n'));
 
 
     let endResult = randomize({
       type: 'multi',
       arrays: obj,
-      results: this.convertToObject(this.state.multiResults.split('\n'))
-    })
+      results: this.convertToObject(this.state.multiResults.split('\n')),
+    });
 
-    this.setState({ endResult })
+    this.setState({ endResult });
   }
 
 
@@ -170,22 +170,22 @@ class Dashboard extends Component {
     let obj = {};
     for (let i = 0; i < array.length; i++) {
       let key = array[i].replace(/\s/g, ''
-      ).split(':')[0]
+      ).split(':')[0];
 
       let value = array[i].replace(/\s/g, ''
-      ).split(':')[1]
+      ).split(':')[1];
 
       try {
         value = JSON.parse(array[i].replace(/\s/g, ''
-        ).split(':')[1])
+        ).split(':')[1]);
       } catch (err) {
         //do nothing
       }
 
-      obj[key] = value
+      obj[key] = value;
     }
 
-    return obj
+    return obj;
   }
 
   addArray = () => {
@@ -193,7 +193,7 @@ class Dashboard extends Component {
   }
 
   toggleTooltip = () => {
-    this.setState({ tooltips: !this.state.tooltips })
+    this.setState({ tooltips: !this.state.tooltips });
   }
 
   render() {
@@ -294,7 +294,7 @@ class Dashboard extends Component {
               <div className={classes.multiArrayDiv}>
                 {this.state.arrayCount.map(index => {
                   return (
-                    <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<MArrayContentToolTip />} placement="bottom">
+                    <Tooltip key={index} disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<MArrayContentToolTip />} placement="bottom">
                       <TextField
                         key={index}
                         className={classes.textField}
@@ -310,17 +310,17 @@ class Dashboard extends Component {
                         placeholder="dogs"
                       />
                     </Tooltip>
-                  )
+                  );
                 })}
 
-                {this.state.arrayType === 'multi' && <Button className={classes.addarraybutton} onClick={this.addArray} variant='contained' size='small' color="primary" className={classes.button}>Add Array</Button>}
+                {this.state.arrayType === 'multi' && <Button className={classes.addarraybutton} onClick={this.addArray} variant='contained' size='small' color="primary" >Add Array</Button>}
 
                 {this.state.arrayType === 'multi' &&
                   <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<SubmitToolTip />} placement="bottom">
 
-                    <Button className={classes.multisubmitbutton} onClick={this.multiSubmit} size='small' variant="contained" color="primary">
+                    <Button className={classes.button} onClick={this.multiSubmit} size='small' variant="contained" color="primary">
                       Submit
-                  </Button>
+                    </Button>
                   </Tooltip>}
               </div>
               <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<MArrayIndexToolTip />} placement="bottom">
@@ -375,22 +375,22 @@ class Dashboard extends Component {
             type: 'single',
             array: [${this.state.singleArray.split('\n').map(element => {
                     try {
-                      JSON.parse(element)
-                      return element
+                      JSON.parse(element);
+                      return element;
                     } catch (err) {
                       return '\'' + element + '\'';
                     }
                   })}],
             index: {
                 ${this.state.singleIndex.split('\n').map((index, i) => {
-                    if (i > 0) return `\n                ` + index
-                    return index
+                    if (i > 0) return `\n                ` + index;
+                    return index;
                   })}
             },
             results: {
                 ${this.state.singleResults.split('\n').map((index, i) => {
-                    if (i > 0) return `\n                ` + index
-                    return index
+                    if (i > 0) return `\n                ` + index;
+                    return index;
                   })}
             }
         })
@@ -406,8 +406,8 @@ class Dashboard extends Component {
                 <div className={classes.resultsDiv}>
                   {`[${this.state.endResult.map(element => {
                     try {
-                      JSON.parse(element)
-                      return element
+                      JSON.parse(element);
+                      return element;
                     } catch (err) {
                       return '\'' + element + '\'';
                     }
@@ -418,7 +418,7 @@ class Dashboard extends Component {
 
 
           {this.state.arrayType === 'multi' &&
-            <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<ArrayTypeToolTip />} placement="bottom">
+            <Tooltip disableHoverListener={!this.state.tooltips} disableFocusListener disableTouchListener TransitionComponent={Zoom} title={<InputToolTip />} placement="right">
               <Card className={classes.card}>
                 <Typography color="textSecondary">input</Typography>
                 <pre>{`
@@ -430,19 +430,19 @@ class Dashboard extends Component {
             arrays:  {${Object.keys(this.state).filter(element => element.includes('multiArray')).map((element, i) => {
                     let array = this.state[element].split('\n').map(element => {
                       try {
-                        JSON.parse(element)
-                        return element
+                        JSON.parse(element);
+                        return element;
                       } catch (err) {
                         return '\'' + element + '\'';
                       }
-                    })
-                    return '\n                ' + String.fromCharCode(97 + i) + ': [' + array + ']'
+                    });
+                    return '\n                ' + String.fromCharCode(97 + i) + ': [' + array + ']';
                   })}
             },
             results: {
                 ${this.state.multiResults.split('\n').map((index, i) => {
-                    if (i > 0) return `\n                ` + index
-                    return index
+                    if (i > 0) return `\n                ` + index;
+                    return index;
                   })}
             }
         })
@@ -458,8 +458,8 @@ class Dashboard extends Component {
                 <div className={classes.resultsDiv}>
                   {`[${this.state.endResult.map(element => {
                     try {
-                      JSON.parse(element)
-                      return element
+                      JSON.parse(element);
+                      return element;
                     } catch (err) {
                       return '\'' + element + '\'';
                     }
@@ -486,4 +486,4 @@ class Dashboard extends Component {
 
 const dispatchStateToProps = state => ({ state });
 
-export default connect(dispatchStateToProps, null)(withStyles(styles)(Dashboard))
+export default connect(dispatchStateToProps, null)(withStyles(styles)(Dashboard));
