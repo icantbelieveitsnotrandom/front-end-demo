@@ -1,9 +1,8 @@
-import { React, Fragment } from 'react';
-import Typography from '@material-ui/core/Typography';
+import { React } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 
-const styles = theme => ({
+const styles = () => ({
   basic: {
     color: 'white',
     width: 300,
@@ -21,8 +20,8 @@ const styles = theme => ({
   },
   example: {
     marginLeft: 35,
-  }
-})
+  },
+});
 
 
 export const ArrayTypeToolTip = withStyles(styles)((props) => {
@@ -35,8 +34,8 @@ export const ArrayTypeToolTip = withStyles(styles)((props) => {
         <p>'Single' utilizes one array, 'Multi' will use one or more arrays.</p>
       </div>
     </div>
-  )
-})
+  );
+});
 
 export const ArrayContentToolTip = withStyles(styles)((props) => {
   return (
@@ -50,8 +49,8 @@ export const ArrayContentToolTip = withStyles(styles)((props) => {
         <p>huskies <br /> dachshund <br /> pug <br /> pitbull <br /> corgi</p>
       </div>
     </div>
-  )
-})
+  );
+});
 
 export const ArrayIndexToolTip = withStyles(styles)((props) => {
   return (
@@ -67,8 +66,8 @@ export const ArrayIndexToolTip = withStyles(styles)((props) => {
         <p>Notice that indexes can overlap.</p>
       </div>
     </div>
-  )
-})
+  );
+});
 
 
 export const ArrayResultsToolTip = withStyles(styles)((props) => {
@@ -84,8 +83,8 @@ export const ArrayResultsToolTip = withStyles(styles)((props) => {
         <p>a: 1 <br /> b: 1 <br /> c: 1</p>
       </div>
     </div>
-  )
-})
+  );
+});
 
 export const SubmitToolTip = withStyles(styles)((props) => {
   return (
@@ -95,8 +94,8 @@ export const SubmitToolTip = withStyles(styles)((props) => {
       </div>
       <p>Hitting submit will display an output section, which will show you what the end results will look like.</p>
     </div>
-  )
-})
+  );
+});
 
 export const InputToolTip = withStyles(styles)((props) => {
   return (
@@ -106,8 +105,8 @@ export const InputToolTip = withStyles(styles)((props) => {
       </div>
       <p>Drop and paste the code in your project! Make sure you import the npm package before putting it in your code.</p>
     </div>
-  )
-})
+  );
+});
 
 export const OutputToolTip = withStyles(styles)((props) => {
   return (
@@ -117,8 +116,8 @@ export const OutputToolTip = withStyles(styles)((props) => {
       </div>
       <p>expected output from the function when it runs.</p>
     </div>
-  )
-})
+  );
+});
 
 export const MArrayContentToolTip = withStyles(styles)((props) => {
   return (
@@ -133,8 +132,8 @@ export const MArrayContentToolTip = withStyles(styles)((props) => {
         <p>huskies <br /> dachshund <br /> pug <br /> pitbull <br /> corgi</p>
       </div>
     </div>
-  )
-})
+  );
+});
 
 export const MArrayIndexToolTip = withStyles(styles)((props) => {
   return (
@@ -149,5 +148,5 @@ export const MArrayIndexToolTip = withStyles(styles)((props) => {
         <p>a: 1 <br /> b: 2 <br /> c: 3</p>
       </div>
     </div>
-  )
-})
+  );
+});
